@@ -11,7 +11,7 @@ def bfs(grafo, origen):
     visitados.add(origen)
     q = deque()
     q.append(origen)
-    while not q.clear():
+    while q:
         v = q.popleft()
         for w in grafo.adyacentes(v):
             if w not in visitados:
@@ -44,7 +44,7 @@ def recorrido_dfs_completo(grafo):
     visitados = set()
     padres = {}
     orden = {}
-    for v in grafo:
+    for v in grafo.obtener_vertices():
         if v not in visitados:
             visitados.add(v)
             padres[v] = None
@@ -63,7 +63,7 @@ def reconstruir_camino(padres, destino):
 def camino_minimo_dijkstra(grafo, origen, destino):
     dist = {}
     padre = {}
-    for v in grafo:
+    for v in grafo.obtener_vertices():
         dist[v] = float("inf")
     dist[origen] = 0
     padre[origen] = None
@@ -74,7 +74,7 @@ def camino_minimo_dijkstra(grafo, origen, destino):
         if v == destino:
             return padre, dist
         for w in grafo.adyacentes(v):
-            distancia_por_aca = dist[v] + grafo.peso(v, w)
+            distancia_por_aca = dist[v] + grafo.peso_arista(v, w)
             if distancia_por_aca < dist[w]:
                 dist[w] = distancia_por_aca
                 padre[w] = v
@@ -84,16 +84,16 @@ def camino_minimo_dijkstra(grafo, origen, destino):
 
 def obtener_aristas(grafo):
     aristas = []
-    for v in grafo:
+    for v in grafo.obtener_vertices():
         for w in grafo.adyacentes(v):
-            aristas.append((v, w, grafo.peso(v, w)))
+            aristas.append((v, w, grafo.peso_arista(v, w)))
     return aristas
 
 
 def camino_minimo_bf(grafo, origen):
     distancia = {}
     padre = {}
-    for v in grafo:
+    for v in grafo.obtener_vertices():
         distancia[v] = float("inf")
     distancia[origen] = 0
     padre[origen] = None

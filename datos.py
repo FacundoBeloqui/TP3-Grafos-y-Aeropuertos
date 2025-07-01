@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 
-class Aeoropuerto:
+@dataclass
+class Aeropuerto:
     ciudad: str
     codigo: str 
     latitud: float
     longitud: float
 
-
+@dataclass
 class Vuelo:
     origen: str
     destino: str
@@ -18,7 +19,7 @@ class Vuelo:
 
 def guardar_aeropuertos(archivo): #{codigo, Aeropuerto}
     aeropuertos = {}
-    with open(archivo, 'r') as f:
+    with open(archivo) as f:
         for linea in f:
             datos = linea.strip().split(",")
             ciudad = datos[0]
@@ -26,14 +27,14 @@ def guardar_aeropuertos(archivo): #{codigo, Aeropuerto}
             latitud = datos[2]
             longitud = datos[3]
 
-            aeropuertos[codigo] = Aeoropuerto(ciudad = ciudad, codigo = codigo, latitud = float(latitud), longitud = float(longitud))
+            aeropuertos[codigo] = Aeropuerto(ciudad, codigo,float(latitud), float(longitud))
     
     return aeropuertos
 
 
 def guardar_vuelos(archivo):  #{origen: {destino: Vuelo}}
     vuelos = {}
-    with open(archivo, 'r') as f:
+    with open(archivo) as f:
         for linea in f:
             datos = linea.strip().split(",")
             origen = datos[0]
@@ -44,7 +45,7 @@ def guardar_vuelos(archivo):  #{origen: {destino: Vuelo}}
 
             if origen not in vuelos:
                 vuelos[origen] = {}
-            vuelos[origen][destino] = Vuelo(origen = origen, destino = destino, tiempo = tiempo, precio = precio, cant_vuelos = cant_vuelos)
+            vuelos[origen][destino] = Vuelo(origen, destino, int(tiempo), int(precio), int(cant_vuelos))
 
     return vuelos
 

@@ -56,3 +56,23 @@ def camino_escalas(grafo_escalas, ciudades, origen, destino):
         print(" -> ".join(mejor_camino))
     else:
         print("No se encontro camino")
+
+def centralidad(grafo):
+    cent = {}
+    for v in grafo: cent[v] = 0
+    for v in grafo:
+        # hacia todos los demas vertices
+        distancia, padre = camino_minimo_dijkstra(grafo, v, None)
+        cent_aux = {}
+        for w in grafo: cent_aux[w] = 0
+        # Aca filtramos (de ser necesario) los vertices a distancia infinita,
+        # y ordenamos de mayor a menor
+        vertices_ordenados = sorted(distancia, key=distancia.get, reverse=True)
+        for w in vertices_ordenados:
+            cent_aux[padre[w]] += 1 + cent_aux[w]
+        # le sumamos 1 a la centralidad de todos los vertices que se encuentren en
+        # el medio del camino
+        for w in grafo:
+            if w == v: continue
+            cent[w] += cent_aux[w]
+    return cent
