@@ -1,5 +1,5 @@
 from datos import guardar_aeropuertos, guardar_vuelos, crear_dicc_ciudades
-from funciones import camino_mas_rapido, camino_mas_barato, camino_escalas, centralidad, nueva_ruta
+from funciones import camino_mas_rapido, camino_mas_barato, camino_escalas, centralidad, nueva_ruta, itinerario
 from grafo import Grafo
 import sys
 
@@ -110,6 +110,13 @@ def main():
                 else:
                     ruta_salida = parametros[0]
                     nueva_ruta(grafo_precio_no_dirigido, vuelos, ruta_salida)
+            
+            case 'itinerario':
+                if len(parametros) != 1:
+                    print("Error en cantidad de argumentos, deberian ser 1")
+                else:
+                    ruta = parametros[0]
+                    itinerario(grafo_tiempo, dicc_ciudades, ruta)
 
             case 'salir':
                 sys.exit(0)

@@ -154,3 +154,30 @@ def calcular_centralidad(grafo):
             if w == v: continue
             cent[w] += cent_aux[w]
     return cent
+
+
+def grados_entrada(grafo):
+    g_ent = {}
+    for v in grafo.obtener_vertices():
+        g_ent[v] = 0
+    for v in grafo.obtener_vertices():
+        for w in grafo.adyacentes(v):
+            g_ent[w] += 1
+    return g_ent
+
+def topologico_grados(grafo):
+    g_ent = grados_entrada(grafo)
+    q = deque()
+    resultado = []
+    for v in grafo.obtener_vertices(): # O(V)
+        if g_ent[v] == 0:
+            q.append(v)
+
+    while q:
+        v = q.popleft()
+        resultado.append(v)
+        for w in grafo.adyacentes(v):
+            g_ent[w] -= 1
+            if g_ent[w] == 0:
+                q.append(w)
+    return resultado

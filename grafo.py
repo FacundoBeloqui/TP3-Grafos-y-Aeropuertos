@@ -62,3 +62,5 @@ class Grafo:
             ady = ', '.join(f"{w} (peso: {p})" for w, p in self.adyacencia[v].items())
             res.append(f"{v} -> {ady}")
         return "\n".join(res)
+
+
