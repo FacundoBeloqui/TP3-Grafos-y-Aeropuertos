@@ -79,52 +79,51 @@ def main():
         if not linea:
             continue
 
-        match comando:
-            case 'camino_mas':
-                if len(parametros) != 3:
-                    print("Error en cantidad de argumentos, deberian ser 3")
-                else:
-                    origen = parametros[1]
-                    destino = parametros[2]
-                    if parametros[0] == "rapido":
-                        camino_mas_rapido(grafo_tiempo, dicc_ciudades, origen, destino)
-                    elif parametros[0] == "barato":
-                        camino_mas_barato(grafo_precio, dicc_ciudades, origen, destino)
+        if comando == 'camino_mas':
+            if len(parametros) != 3:
+                print("Error en cantidad de argumentos, deberian ser 3")
+            else:
+                origen = parametros[1]
+                destino = parametros[2]
+                if parametros[0] == "rapido":
+                    camino_mas_rapido(grafo_tiempo, dicc_ciudades, origen, destino)
+                elif parametros[0] == "barato":
+                    camino_mas_barato(grafo_precio, dicc_ciudades, origen, destino)
 
-            case 'camino_escalas':
-                if len(parametros) != 2:
-                    print("Error en cantidad de argumentos, deberian ser 2")
-                else:
-                    origen = parametros[0]
-                    destino = parametros[1]
-                    camino_escalas(grafo_escalas, dicc_ciudades, origen, destino)
+        elif comando ==  'camino_escalas':
+            if len(parametros) != 2:
+                print("Error en cantidad de argumentos, deberian ser 2")
+            else:
+                origen = parametros[0]
+                destino = parametros[1]
+                camino_escalas(grafo_escalas, dicc_ciudades, origen, destino)
 
-            case 'centralidad':
-                if len(parametros) != 1:
-                    print("Error en cantidad de argumentos, deberian ser 1")
-                else:
-                    n = int(parametros[0])
-                    centralidad(grafo_frecuencias, n)
-                    
-            case 'nueva_aerolinea':
-                if len(parametros) != 1:
-                    print("Error: se espera 1 parámetro (ruta del archivo)")
-                else:
-                    ruta_salida = parametros[0]
-                    nueva_ruta(grafo_precio_no_dirigido, vuelos, ruta_salida)
-            
-            case 'itinerario':
-                if len(parametros) != 1:
-                    print("Error en cantidad de argumentos, deberian ser 1")
-                else:
-                    ruta = parametros[0]
-                    itinerario(grafo_tiempo, dicc_ciudades, ruta)
+        elif comando == 'centralidad':
+            if len(parametros) != 1:
+                print("Error en cantidad de argumentos, deberian ser 1")
+            else:
+                n = int(parametros[0])
+                centralidad(grafo_frecuencias, n)
 
-            case 'salir':
-                sys.exit(0)
+        elif comando == 'nueva_aerolinea':
+            if len(parametros) != 1:
+                print("Error: se espera 1 parámetro (ruta del archivo)")
+            else:
+                ruta_salida = parametros[0]
+                nueva_ruta(grafo_precio_no_dirigido, vuelos, ruta_salida)
 
-            case _:
-                print(f"Comando inválido o parámetros incorrectos: {linea}", file=sys.stderr)
+        elif comando == 'itinerario':
+            if len(parametros) != 1:
+                print("Error en cantidad de argumentos, deberian ser 1")
+            else:
+                ruta = parametros[0]
+                itinerario(grafo_tiempo, dicc_ciudades, ruta)
+
+        elif comando == 'salir':
+            sys.exit(0)
+
+        else:
+            print(f"Comando inválido o parámetros incorrectos: {linea}", file=sys.stderr)
 
 
 if __name__ == '__main__':

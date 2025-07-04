@@ -1,0 +1,144 @@
+Index: flycombi.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#!/usr/bin/python3\n\nfrom datos import guardar_aeropuertos, guardar_vuelos, crear_dicc_ciudades\nfrom funciones import camino_mas_rapido, camino_mas_barato, camino_escalas, centralidad, nueva_ruta, itinerario\nfrom grafo import Grafo\nimport sys\n\ndef crear_grafo_frecuencia(vuelos):\n    grafo = Grafo(es_dirigido=True)\n    for origen in vuelos:\n        for destino in vuelos[origen]:\n            vuelo = vuelos[origen][destino]\n            if vuelo.cant_vuelos > 0:\n                peso = 1 / vuelo.cant_vuelos\n            else:\n                peso = float('inf')  # O un valor muy alto si no hay vuelos\n            grafo.agregar_arista(origen, destino, peso)\n    return grafo\n\n'''---------mas rapido -----------'''\ndef crear_grafo_tiempo(vuelos):\n    grafo = Grafo(es_dirigido=True)\n    for origen in vuelos:\n        for destino in vuelos[origen]:\n            vuelo = vuelos[origen][destino]\n            grafo.agregar_arista(origen, destino, vuelo.tiempo)\n    return grafo\n\n\n'''---------mas barato -----------'''\n\ndef crear_grafo_precio(vuelos):\n    grafo = Grafo(es_dirigido=True)\n    for origen in vuelos:\n        for destino in vuelos[origen]:\n            vuelo = vuelos[origen][destino]\n            grafo.agregar_arista(origen, destino, vuelo.precio)\n    return grafo\n\ndef crear_grafo_precio_no_dirigido(vuelos):\n    grafo = Grafo(es_dirigido=False)\n    for origen in vuelos:\n        for destino in vuelos[origen]:\n            vuelo = vuelos[origen][destino]\n            grafo.agregar_arista(origen, destino, vuelo.precio)\n    return grafo\n\n\n'''---------menos escalas -----------'''\n\ndef crear_grafo_escalas(vuelos):\n    grafo = Grafo(es_dirigido=True)\n    for origen in vuelos:\n        for destino in vuelos[origen]:\n            grafo.agregar_arista(origen, destino, 1)\n    return grafo\n\ndef main():\n    if len(sys.argv) != 3:\n        sys.exit(1)\n\n    archivo_aer = sys.argv[1]\n    archivo_vue = sys.argv[2]\n    aeropuertos = guardar_aeropuertos(archivo_aer)\n    vuelos = guardar_vuelos(archivo_vue)\n    dicc_ciudades = crear_dicc_ciudades(aeropuertos)\n\n    grafo_tiempo = crear_grafo_tiempo(vuelos)\n    grafo_precio = crear_grafo_precio(vuelos)\n    grafo_precio_no_dirigido = crear_grafo_precio_no_dirigido(vuelos)\n    grafo_escalas = crear_grafo_escalas(vuelos)\n    grafo_frecuencias = crear_grafo_frecuencia(vuelos)\n\n    for linea in sys.stdin:  #camino_mas rapido,San Diego,New York,  camino_escalas San Diego,New York\n        linea = linea.strip()\n        comando, params = linea.split(\" \", 1)\n        parametros = params.split(\",\")\n\n        if not linea:\n            continue\n\n        match comando:\n            case 'camino_mas':\n                if len(parametros) != 3:\n                    print(\"Error en cantidad de argumentos, deberian ser 3\")\n                else:\n                    origen = parametros[1]\n                    destino = parametros[2]\n                    if parametros[0] == \"rapido\":\n                        camino_mas_rapido(grafo_tiempo, dicc_ciudades, origen, destino)\n                    elif parametros[0] == \"barato\":\n                        camino_mas_barato(grafo_precio, dicc_ciudades, origen, destino)\n\n            case 'camino_escalas':\n                if len(parametros) != 2:\n                    print(\"Error en cantidad de argumentos, deberian ser 2\")\n                else:\n                    origen = parametros[0]\n                    destino = parametros[1]\n                    camino_escalas(grafo_escalas, dicc_ciudades, origen, destino)\n\n            case 'centralidad':\n                if len(parametros) != 1:\n                    print(\"Error en cantidad de argumentos, deberian ser 1\")\n                else:\n                    n = int(parametros[0])\n                    centralidad(grafo_frecuencias, n)\n                    \n            case 'nueva_aerolinea':\n                if len(parametros) != 1:\n                    print(\"Error: se espera 1 parámetro (ruta del archivo)\")\n                else:\n                    ruta_salida = parametros[0]\n                    nueva_ruta(grafo_precio_no_dirigido, vuelos, ruta_salida)\n            \n            case 'itinerario':\n                if len(parametros) != 1:\n                    print(\"Error en cantidad de argumentos, deberian ser 1\")\n                else:\n                    ruta = parametros[0]\n                    itinerario(grafo_tiempo, dicc_ciudades, ruta)\n\n            case 'salir':\n                sys.exit(0)\n\n            case _:\n                print(f\"Comando inválido o parámetros incorrectos: {linea}\", file=sys.stderr)\n\n\nif __name__ == '__main__':\n    main()\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/flycombi.py b/flycombi.py
+--- a/flycombi.py	(revision 43bf8782a016d3d852e3f727189ddf3b1bb2eb1e)
++++ b/flycombi.py	(date 1751654247721)
+@@ -118,7 +118,7 @@
+                     print("Error en cantidad de argumentos, deberian ser 1")
+                 else:
+                     ruta = parametros[0]
+-                    itinerario(grafo_tiempo, dicc_ciudades, ruta)
++                    itinerario(grafo_escalas, dicc_ciudades, ruta)
+ 
+             case 'salir':
+                 sys.exit(0)
+Index: biblioteca.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from grafo import Grafo\nfrom collections import deque\nimport heapq\n\ndef bfs(grafo, origen):\n    visitados = set()\n    padres = {}\n    orden = {}\n    padres[origen] = None\n    orden[origen] = 0\n    visitados.add(origen)\n    q = deque()\n    q.append(origen)\n    while q:\n        v = q.popleft()\n        for w in grafo.adyacentes(v):\n            if w not in visitados:\n                padres[w] = v\n                orden[w] = orden[v] + 1\n                visitados.add(w)\n                q.append(w)\n    return padres, orden\n\ndef _dfs(grafo, v, visitados, padres, orden):\n    for w in grafo.adyacentes(v):\n        if w not in visitados:\n            visitados.add(w)\n            padres[w] = v\n            orden[w] = orden[v] + 1\n            _dfs(grafo, w, visitados, padres, orden)\n\n\ndef dfs(grafo, origen):\n    padres = {}\n    orden = {}\n    visitados = set()\n    padres[origen] = None\n    orden[origen] = 0\n    visitados.add(origen)\n    _dfs(grafo, origen, visitados, padres, orden)\n    return padres, orden\n\ndef recorrido_dfs_completo(grafo):\n    visitados = set()\n    padres = {}\n    orden = {}\n    for v in grafo.obtener_vertices():\n        if v not in visitados:\n            visitados.add(v)\n            padres[v] = None\n            orden[v] = 0\n            _dfs(grafo, v, visitados, padres, orden)\n    return padres, orden\n\n\ndef reconstruir_camino(padres, destino):\n    recorrido = []\n    while destino is not None:\n        recorrido.append(destino)\n        destino = padres[destino]\n    return recorrido[::-1]\n\ndef camino_minimo_dijkstra(grafo, origen, destino):\n    dist = {}\n    padre = {}\n    for v in grafo.obtener_vertices():\n        dist[v] = float(\"inf\")\n    dist[origen] = 0\n    padre[origen] = None\n    heap = []\n    heapq.heappush(heap, (dist[origen], origen))\n    while heap:\n        _, v = heapq.heappop(heap)\n        if v == destino:\n            return padre, dist\n        for w in grafo.adyacentes(v):\n            distancia_por_aca = dist[v] + grafo.peso_arista(v, w)\n            if distancia_por_aca < dist[w]:\n                dist[w] = distancia_por_aca\n                padre[w] = v\n                heapq.heappush(heap, (dist[w], w))\n    return padre, dist\n\n\ndef obtener_aristas(grafo):\n    aristas = []\n    for v in grafo.obtener_vertices():\n        for w in grafo.adyacentes(v):\n            aristas.append((v, w, grafo.peso_arista(v, w)))\n    return aristas\n\n\ndef camino_minimo_bf(grafo, origen):\n    distancia = {}\n    padre = {}\n    for v in grafo.obtener_vertices():\n        distancia[v] = float(\"inf\")\n    distancia[origen] = 0\n    padre[origen] = None\n    aristas = obtener_aristas(grafo)\n    for i in range(len(grafo)):\n        cambio = False\n        for origen, destino, peso in aristas:\n            if distancia[origen] + peso < distancia[destino]:\n                cambio = True\n                padre[destino] = origen\n                distancia[destino] = distancia[origen] + peso\n        if not cambio:\n            return padre, distancia\n\n    for v, w, peso in aristas:\n        if distancia[v] + peso < distancia[w]:\n            return None\n    return padre, distancia\n\ndef mst_prim(grafo):\n    v = grafo.vertice_aleatorio()\n    visitados = set()\n    visitados.add(v)\n    heap = []\n    for w in grafo.adyacentes(v):\n        peso = grafo.peso_arista(v, w)\n        heapq.heappush(heap, (peso, v, w))\n    arbol = Grafo(es_dirigido=False, vertices_init=grafo.obtener_vertices())\n    while heap:\n        peso, v, w = heapq.heappop(heap)\n        if w in visitados:\n            continue\n        arbol.agregar_arista(v, w, peso)\n        visitados.add(w)\n        for x in grafo.adyacentes(w):\n            if x not in visitados:\n                peso_vecino = grafo.peso_arista(w, x)\n                heapq.heappush(heap, (peso_vecino, w, x))\n    return arbol\n\n\n\ndef calcular_centralidad(grafo):\n    cent = {}\n    for v in grafo.obtener_vertices(): cent[v] = 0\n    for v in grafo.obtener_vertices():\n        padre, distancia = camino_minimo_dijkstra(grafo, v, None)\n        cent_aux = {}\n        for w in grafo.obtener_vertices():\n            cent_aux[w] = 0\n        vertices_ordenados = sorted(distancia, key=distancia.get, reverse=True)\n        for w in vertices_ordenados:\n            p = padre.get(w)\n            if p is None or p not in cent_aux:\n                continue\n            cent_aux[p] += 1 + cent_aux[w]\n        for w in grafo.obtener_vertices():\n            if w == v: continue\n            cent[w] += cent_aux[w]\n    return cent\n\n\ndef grados_entrada(grafo):\n    g_ent = {}\n    for v in grafo.obtener_vertices():\n        g_ent[v] = 0\n    for v in grafo.obtener_vertices():\n        for w in grafo.adyacentes(v):\n            g_ent[w] += 1\n    return g_ent\n\ndef topologico_grados(grafo):\n    g_ent = grados_entrada(grafo)\n    q = deque()\n    resultado = []\n    for v in grafo.obtener_vertices(): # O(V)\n        if g_ent[v] == 0:\n            q.append(v)\n\n    while q:\n        v = q.popleft()\n        resultado.append(v)\n        for w in grafo.adyacentes(v):\n            g_ent[w] -= 1\n            if g_ent[w] == 0:\n                q.append(w)\n    return resultado
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/biblioteca.py b/biblioteca.py
+--- a/biblioteca.py	(revision 43bf8782a016d3d852e3f727189ddf3b1bb2eb1e)
++++ b/biblioteca.py	(date 1751654247721)
+@@ -156,7 +156,7 @@
+     return cent
+ 
+ 
+-def grados_entrada(grafo):
++'''def grados_entrada(grafo):
+     g_ent = {}
+     for v in grafo.obtener_vertices():
+         g_ent[v] = 0
+@@ -180,4 +180,23 @@
+             g_ent[w] -= 1
+             if g_ent[w] == 0:
+                 q.append(w)
+-    return resultado
+\ No newline at end of file
++    return resultado
++'''
++
++
++def _dfs(grafo, v, visitados, pila):
++    visitados.add(v)
++    for w in grafo.adyacentes(v):
++        if w not in visitados:
++            visitados.add(w)
++            _dfs(grafo, w, visitados, pila)
++    pila.append(v)
++
++
++def topologico_dfs(grafo):
++    visitados = set()
++    pila = []
++    for v in grafo.obtener_vertices():
++        if v not in visitados:
++            _dfs(grafo, v, visitados, pila)
++    return pila[::-1]
+Index: funciones.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from grafo import Grafo \nfrom biblioteca import camino_minimo_dijkstra, reconstruir_camino, bfs, mst_prim, calcular_centralidad, topologico_grados\n\n\ndef obtener_aeropuertos(ciudades, origen, destino):\n    aeropuertos_origen = ciudades.get(origen, [])\n    aeropuertos_destino = ciudades.get(destino, [])\n\n    if not aeropuertos_origen or not aeropuertos_destino:\n        print(\"Origen o destino no encontrado\")\n        return None, None\n    return aeropuertos_origen, aeropuertos_destino\n\n\ndef camino_minimo(grafo, ciudades, origen, destino):\n    aeropuertos_origen, aeropuertos_destino = obtener_aeropuertos(ciudades, origen, destino)\n    if aeropuertos_origen is None:\n        return\n\n    mejor_camino = None\n    mejor = float(\"inf\")\n\n    for orig in aeropuertos_origen:\n        padre, dist = camino_minimo_dijkstra(grafo, orig, None)\n        for dest in aeropuertos_destino:\n            if dest in dist and dist[dest] < mejor:\n                mejor_camino = reconstruir_camino(padre, dest)\n                mejor = dist[dest]\n\n    if mejor_camino:\n        print(\" -> \".join(mejor_camino))\n    else:\n        print(\"No se encontro camino\")\n\n\ndef camino_mas_rapido(grafo_tiempo, ciudades, origen, destino):\n    return camino_minimo(grafo_tiempo, ciudades, origen, destino)\n\n\ndef camino_mas_barato(grafo_precio, ciudades, origen, destino):\n    return camino_minimo(grafo_precio, ciudades, origen, destino)\n\n\ndef camino_escalas(grafo_escalas, ciudades, origen, destino):\n    aeropuertos_origen, aeropuertos_destino = obtener_aeropuertos(ciudades, origen, destino)\n\n    mejor_camino = None\n    menos_escalas = float(\"inf\")\n\n    for orig in aeropuertos_origen:\n        padre, orden = bfs(grafo_escalas, orig)\n        for dest in aeropuertos_destino:\n            if dest in orden and orden[dest] < menos_escalas:\n                mejor_camino = reconstruir_camino(padre, dest)\n                menos_escalas = orden[dest]\n\n    if mejor_camino:\n        print(\" -> \".join(mejor_camino))\n    else:\n        print(\"No se encontro camino\")\n\ndef centralidad(grafo_precio, n):\n    dicc_centralidad = calcular_centralidad(grafo_precio)\n    dicc_ordenado = sorted(dicc_centralidad.items(), key=lambda x: (-x[1], x[0]))\n    lista = []\n    for aeropuerto, _ in dicc_ordenado[:n]:\n        lista.append(aeropuerto)\n    print(\", \".join(lista))\n\n\n\ndef nueva_ruta(grafo_precio, vuelos, archivo):\n    arbol = mst_prim(grafo_precio)  # devuelve Grafo no dirigido con solo las aristas del MST\n    with open(archivo, 'w') as f:\n        for origen in arbol.obtener_vertices():\n            for destino in arbol.adyacentes(origen):\n                # evitar duplicados: solo una dirección\n                if origen < destino:\n                    # buscar el vuelo real para obtener datos completos\n                    if destino in vuelos.get(origen, {}):\n                        vuelo = vuelos[origen][destino]\n                    elif origen in vuelos.get(destino, {}):\n                        vuelo = vuelos[destino][origen]\n                        origen, destino = destino, origen\n                    else:\n                        continue\n                    f.write(f\"{origen},{destino},{vuelo.tiempo},{vuelo.precio},{vuelo.cant_vuelos}\\n\")\n    print(\"OK\")\n\n\ndef itinerario(grafo_vuelos, dicc_ciudades, ruta):\n    lineas = []\n    with open(ruta) as f:\n        for linea in f:\n            lineas.append(linea.strip())\n    \n    ciudades = lineas[0].split(\",\")\n    grafo_orden = Grafo(es_dirigido=True)\n    \n    for ciudad in ciudades:\n        grafo_orden.agregar_vertice(ciudad)\n    \n    for i in range(1, len(lineas)):\n        ciudad = lineas[i].split(\",\")\n        grafo_orden.agregar_arista(ciudad[0].strip(), ciudad[1].strip()) \n    \n    orden = topologico_grados(grafo_orden)\n    if len(orden) != len(ciudades):\n        return\n\n    print(\", \".join(orden))\n    for i in range(len(orden)-1):\n        camino_minimo(grafo_vuelos, dicc_ciudades, orden[i], orden[i+1])\n\n\n\n\n    \n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/funciones.py b/funciones.py
+--- a/funciones.py	(revision 43bf8782a016d3d852e3f727189ddf3b1bb2eb1e)
++++ b/funciones.py	(date 1751654247721)
+@@ -1,5 +1,5 @@
+ from grafo import Grafo 
+-from biblioteca import camino_minimo_dijkstra, reconstruir_camino, bfs, mst_prim, calcular_centralidad, topologico_grados
++from biblioteca import camino_minimo_dijkstra, reconstruir_camino, bfs, mst_prim, calcular_centralidad, topologico_dfs
+ 
+ 
+ def obtener_aeropuertos(ciudades, origen, destino):
+@@ -59,9 +59,9 @@
+     else:
+         print("No se encontro camino")
+ 
+-def centralidad(grafo_precio, n):
+-    dicc_centralidad = calcular_centralidad(grafo_precio)
+-    dicc_ordenado = sorted(dicc_centralidad.items(), key=lambda x: (-x[1], x[0]))
++def centralidad(grafo_frecuencias, n):
++    dicc_centralidad = calcular_centralidad(grafo_frecuencias)
++    dicc_ordenado = sorted(dicc_centralidad.items(), key=lambda x: x[1], reverse=True)
+     lista = []
+     for aeropuerto, _ in dicc_ordenado[:n]:
+         lista.append(aeropuerto)
+@@ -88,7 +88,7 @@
+     print("OK")
+ 
+ 
+-def itinerario(grafo_vuelos, dicc_ciudades, ruta):
++def itinerario(grafo_escalas, dicc_ciudades, ruta):
+     lineas = []
+     with open(ruta) as f:
+         for linea in f:
+@@ -104,13 +104,13 @@
+         ciudad = lineas[i].split(",")
+         grafo_orden.agregar_arista(ciudad[0].strip(), ciudad[1].strip()) 
+     
+-    orden = topologico_grados(grafo_orden)
++    orden = topologico_dfs(grafo_orden)
+     if len(orden) != len(ciudades):
+         return
+ 
+     print(", ".join(orden))
+     for i in range(len(orden)-1):
+-        camino_minimo(grafo_vuelos, dicc_ciudades, orden[i], orden[i+1])
++        camino_escalas(grafo_escalas, dicc_ciudades, orden[i], orden[i+1])
+ 
+ 
+ 
+Index: .vscode/launch.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.vscode/launch.json b/.vscode/launch.json
+new file mode 100644
+--- /dev/null	(date 1751654247721)
++++ b/.vscode/launch.json	(date 1751654247721)
+@@ -0,0 +1,14 @@
++{
++    "version": "0.2.0",
++    "configurations": [
++        {
++            "name": "Python: flycombi.py",
++            "type": "debugpy",
++            "request": "launch",
++            "program": "${workspaceFolder}/flycombi.py",
++            "console": "integratedTerminal",
++            "args": ["aeropuertos.csv", "vuelos.csv"], // Aquí pones los nombres de tus archivos de aeropuertos y vuelos
++            "justMyCode": true
++        }
++    ]
++}
+\ No newline at end of file

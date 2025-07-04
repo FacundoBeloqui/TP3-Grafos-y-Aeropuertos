@@ -21,14 +21,6 @@ def bfs(grafo, origen):
                 q.append(w)
     return padres, orden
 
-def _dfs(grafo, v, visitados, padres, orden):
-    for w in grafo.adyacentes(v):
-        if w not in visitados:
-            visitados.add(w)
-            padres[w] = v
-            orden[w] = orden[v] + 1
-            _dfs(grafo, w, visitados, padres, orden)
-
 
 def dfs(grafo, origen):
     padres = {}
@@ -60,7 +52,7 @@ def reconstruir_camino(padres, destino):
         destino = padres[destino]
     return recorrido[::-1]
 
-def camino_minimo_dijkstra(grafo, origen, destino):
+def camino_minimo_dijkstra(grafo, obtener_peso, origen, destino):
     dist = {}
     padre = {}
     for v in grafo.obtener_vertices():
@@ -74,11 +66,13 @@ def camino_minimo_dijkstra(grafo, origen, destino):
         if v == destino:
             return padre, dist
         for w in grafo.adyacentes(v):
-            distancia_por_aca = dist[v] + grafo.peso_arista(v, w)
-            if distancia_por_aca < dist[w]:
-                dist[w] = distancia_por_aca
+            vuelo = grafo.peso_arista(v, w)
+            peso = obtener_peso(vuelo)
+            nueva = dist[v] + peso
+            if nueva < dist[w]:
+                dist[w] = nueva
                 padre[w] = v
-                heapq.heappush(heap, (dist[w], w))
+                heapq.heappush(heap, (nueva, w))
     return padre, dist
 
 
@@ -113,13 +107,14 @@ def camino_minimo_bf(grafo, origen):
             return None
     return padre, distancia
 
-def mst_prim(grafo):
+def mst_prim(grafo, obtener_peso):
     v = grafo.vertice_aleatorio()
     visitados = set()
     visitados.add(v)
     heap = []
     for w in grafo.adyacentes(v):
-        peso = grafo.peso_arista(v, w)
+        vuelo = grafo.peso_arista(v, w)
+        peso = obtener_peso(vuelo)
         heapq.heappush(heap, (peso, v, w))
     arbol = Grafo(es_dirigido=False, vertices_init=grafo.obtener_vertices())
     while heap:
@@ -130,7 +125,8 @@ def mst_prim(grafo):
         visitados.add(w)
         for x in grafo.adyacentes(w):
             if x not in visitados:
-                peso_vecino = grafo.peso_arista(w, x)
+                vuelo_vecino = grafo.peso_arista(w, x)
+                peso_vecino = obtener_peso(vuelo_vecino)
                 heapq.heappush(heap, (peso_vecino, w, x))
     return arbol
 
@@ -140,7 +136,7 @@ def calcular_centralidad(grafo):
     cent = {}
     for v in grafo.obtener_vertices(): cent[v] = 0
     for v in grafo.obtener_vertices():
-        padre, distancia = camino_minimo_dijkstra(grafo, v, None)
+        padre, distancia = camino_minimo_dijkstra(grafo, v, None, lambda vuelo: 1/vuelo.cant_vuelos if vuelo.cant_vuelos>0 else float("inf"))
         cent_aux = {}
         for w in grafo.obtener_vertices():
             cent_aux[w] = 0
@@ -154,34 +150,6 @@ def calcular_centralidad(grafo):
             if w == v: continue
             cent[w] += cent_aux[w]
     return cent
-
-
-'''def grados_entrada(grafo):
-    g_ent = {}
-    for v in grafo.obtener_vertices():
-        g_ent[v] = 0
-    for v in grafo.obtener_vertices():
-        for w in grafo.adyacentes(v):
-            g_ent[w] += 1
-    return g_ent
-
-def topologico_grados(grafo):
-    g_ent = grados_entrada(grafo)
-    q = deque()
-    resultado = []
-    for v in grafo.obtener_vertices(): # O(V)
-        if g_ent[v] == 0:
-            q.append(v)
-
-    while q:
-        v = q.popleft()
-        resultado.append(v)
-        for w in grafo.adyacentes(v):
-            g_ent[w] -= 1
-            if g_ent[w] == 0:
-                q.append(w)
-    return resultado
-'''
 
 
 def _dfs(grafo, v, visitados, pila):

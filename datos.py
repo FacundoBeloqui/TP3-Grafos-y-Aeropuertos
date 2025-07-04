@@ -16,7 +16,6 @@ class Vuelo:
     cant_vuelos: int
 
 
-
 def guardar_aeropuertos(archivo): #{codigo, Aeropuerto}
     aeropuertos = {}
     with open(archivo) as f:
@@ -32,8 +31,8 @@ def guardar_aeropuertos(archivo): #{codigo, Aeropuerto}
     return aeropuertos
 
 
-def guardar_vuelos(archivo):  #{origen: {destino: Vuelo}}
-    vuelos = {}
+def guardar_vuelos(archivo):
+    vuelos = []
     with open(archivo) as f:
         for linea in f:
             datos = linea.strip().split(",")
@@ -43,9 +42,7 @@ def guardar_vuelos(archivo):  #{origen: {destino: Vuelo}}
             precio = datos[3]
             cant_vuelos = datos[4]
 
-            if origen not in vuelos:
-                vuelos[origen] = {}
-            vuelos[origen][destino] = Vuelo(origen, destino, int(tiempo), int(precio), int(cant_vuelos))
+            vuelos.append(Vuelo(origen, destino, int(tiempo), int(precio), int(cant_vuelos)))
 
     return vuelos
 
