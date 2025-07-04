@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ed9b34d4-6755-4edf-82de-62368847716c" name="Changes" comment="Repositorio Creado">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/biblioteca.py" beforeDir="false" afterPath="$PROJECT_DIR$/biblioteca.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flycombi.py" beforeDir="false" afterPath="$PROJECT_DIR$/flycombi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/funciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/funciones.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grafo.py" beforeDir="false" afterPath="$PROJECT_DIR$/grafo.py" afterDir="false" />
-    </list>
-    <list id="e999f66f-158f-4f32-be24-f907794ef9f0" name="Changes by luisana" comment="" />
+    <list default="true" id="ed9b34d4-6755-4edf-82de-62368847716c" name="Changes" comment="Repositorio Creado" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -105,7 +98,7 @@
       <workItem from="1751340765878" duration="53000" />
       <workItem from="1751576673459" duration="258000" />
       <workItem from="1751576954073" duration="308000" />
-      <workItem from="1751579307561" duration="7983000" />
+      <workItem from="1751579307561" duration="8858000" />
     </task>
     <task id="LOCAL-00001" summary="Repositorio Creado">
       <option name="closed" value="true" />

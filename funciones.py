@@ -79,11 +79,21 @@ def centralidad(grafo):
     return cent
 
 
-def nueva_ruta(grafo_precio, vuelos, archivo):  #{origen: {destino: Vuelo}}
-    arbol = mst_prim(grafo_precio)
+def nueva_ruta(grafo_precio, vuelos, archivo):
+    arbol = mst_prim(grafo_precio)  # devuelve Grafo no dirigido con solo las aristas del MST
     with open(archivo, 'w') as f:
-        for origen, dicc in vuelos.items():
-            for destino, vuelo in dicc.items():
-                if vuelo.origen in arbol.obtener_vertices():
-                    f.write(f"{vuelo.origen},{vuelo.destino},{vuelo.tiempo},{vuelo.precio},{vuelo.cant_vuelos}\n")
+        for origen in arbol.obtener_vertices():
+            for destino in arbol.adyacentes(origen):
+                # evitar duplicados: solo una dirección
+                if origen < destino:
+                    # buscar el vuelo real para obtener datos completos
+                    if destino in vuelos.get(origen, {}):
+                        vuelo = vuelos[origen][destino]
+                    elif origen in vuelos.get(destino, {}):
+                        vuelo = vuelos[destino][origen]
+                        origen, destino = destino, origen
+                    else:
+                        continue
+                    f.write(f"{origen},{destino},{vuelo.tiempo},{vuelo.precio},{vuelo.cant_vuelos}\n")
     print("OK")
+
