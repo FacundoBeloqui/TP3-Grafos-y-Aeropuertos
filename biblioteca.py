@@ -2,6 +2,27 @@ from grafo import Grafo
 from collections import deque
 import heapq
 
+class UnionFind:
+    def __init__(self, elems):
+        #self.groups = {e: e for e in elems}
+        self.groups = {}
+        for e in elems:
+            self.groups[e] = e
+
+    def find(self, v):
+        if self.groups[v] == v:
+            return v
+
+        real_group = self.find(self.groups[v])
+        # plancho la estructura
+        self.groups[v] = real_group
+        return real_group
+
+    def union(self, u, v):
+        new_group = self.find(u)
+        other = self.find(v)
+        self.groups[other] = new_group
+
 def bfs(grafo, origen):
     visitados = set()
     padres = {}
@@ -130,13 +151,24 @@ def mst_prim(grafo, obtener_peso):
                 heapq.heappush(heap, (peso_vecino, w, x))
     return arbol
 
+def mst_kruskal(grafo):
+    uf = UnionFind(grafo.obtener_vertices())
+    aristas = obtener_aristas(grafo)
+    aristas.sort(key=lambda tpl: tpl[2].precio)
+    mst = Grafo(es_dirigido=False, vertices_init=grafo.obtener_vertices())
+    for v, w, vuelo in aristas:
+        if uf.find(v) != uf.find(w):
+            mst.agregar_arista(v, w, vuelo.precio)
+            uf.union(v, w)
+
+    return mst
 
 
 def calcular_centralidad(grafo):
     cent = {}
     for v in grafo.obtener_vertices(): cent[v] = 0
     for v in grafo.obtener_vertices():
-        padre, distancia = camino_minimo_dijkstra(grafo, v, None, lambda vuelo: 1/vuelo.cant_vuelos if vuelo.cant_vuelos>0 else float("inf"))
+        padre, distancia = camino_minimo_dijkstra(grafo, lambda vuelo: 1/vuelo.cant_vuelos if vuelo.cant_vuelos != 0 else float("inf"), v, None)
         cent_aux = {}
         for w in grafo.obtener_vertices():
             cent_aux[w] = 0

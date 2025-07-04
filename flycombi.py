@@ -7,8 +7,10 @@ import sys
 
 def crear_grafo(vuelos):
     grafo = Grafo(es_dirigido=False)
-    for vuelo in vuelos:
-        grafo.agregar_arista(vuelo.origen, vuelo.destino, vuelo)
+    for origen in vuelos:
+        for destino in vuelos[origen]:
+            vuelo = vuelos[origen][destino]
+            grafo.agregar_arista(origen, destino, vuelo)
     return grafo
 
 

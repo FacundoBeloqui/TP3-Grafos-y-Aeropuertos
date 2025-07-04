@@ -31,8 +31,8 @@ def guardar_aeropuertos(archivo): #{codigo, Aeropuerto}
     return aeropuertos
 
 
-def guardar_vuelos(archivo):
-    vuelos = []
+def guardar_vuelos(archivo): #{origen, {destino, Vuelo}}
+    vuelos = {}
     with open(archivo) as f:
         for linea in f:
             datos = linea.strip().split(",")
@@ -42,7 +42,9 @@ def guardar_vuelos(archivo):
             precio = datos[3]
             cant_vuelos = datos[4]
 
-            vuelos.append(Vuelo(origen, destino, int(tiempo), int(precio), int(cant_vuelos)))
+            if origen not in vuelos:
+                vuelos[origen] = {}
+            vuelos[origen][destino] = Vuelo(origen, destino, int(tiempo), int(precio), int(cant_vuelos))
 
     return vuelos
 

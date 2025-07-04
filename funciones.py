@@ -1,11 +1,11 @@
 from grafo import Grafo 
-from biblioteca import camino_minimo_dijkstra, reconstruir_camino, bfs, mst_prim, calcular_centralidad, topologico_dfs
+from biblioteca import camino_minimo_dijkstra, reconstruir_camino, bfs, mst_kruskal, calcular_centralidad, topologico_dfs
 
 
 def obtener_aeropuertos(ciudades, origen, destino):
 
-    aeropuertos_origen = ciudades[origen]
-    aeropuertos_destino = set(ciudades[destino])
+    aeropuertos_origen = ciudades.get(origen, [])
+    aeropuertos_destino = ciudades.get(destino, [])
 
     if not aeropuertos_origen or not aeropuertos_destino:
         print("Origen o destino no encontrado")
@@ -62,7 +62,7 @@ def camino_escalas(grafo_escalas, ciudades, origen, destino):
 
 def centralidad(grafo_precio, n):
     dicc_centralidad = calcular_centralidad(grafo_precio)
-    dicc_ordenado = sorted(dicc_centralidad.items(), key=lambda x: (-x[1], x[0]))
+    dicc_ordenado = sorted(dicc_centralidad.items(), key=lambda x: x[1], reverse=True)
     lista = []
     for aeropuerto, _ in dicc_ordenado[:n]:
         lista.append(aeropuerto)
@@ -71,14 +71,22 @@ def centralidad(grafo_precio, n):
 
 
 def nueva_ruta(grafo, vuelos, archivo):
-    arbol = mst_prim(grafo, lambda vuelo: vuelo.precio)  # devuelve Grafo no dirigido con solo las aristas del MST
-    print(arbol.obtener_vertices())
-    #with open(archivo, 'w') as f:
-     #   for origen in arbol.obtener_vertices():
-      #      for destino in arbol.adyacentes(origen):
-       #         for vuelo in vuelos:
-        #            if vuelo.origen == origen and vuelo.destino == destino:
-         #               f.write(f"{vuelo.origen},{vuelo.destino},{vuelo.tiempo},{vuelo.precio},{vuelo.cant_vuelos}\n")
+    arbol = mst_kruskal(grafo)
+    with open(archivo, 'w') as f:
+        for u in arbol.obtener_vertices():
+            for v in arbol.adyacentes(u):
+                if u < v:
+                    if v in vuelos.get(u, {}):
+                        vuelo = vuelos[u][v]
+                        origen, destino = u, v
+                    elif u in vuelos.get(v, {}):
+                        vuelo = vuelos[v][u]
+                        origen, destino = v, u
+                    else:
+                        continue
+                    f.write(f"{origen},{destino},"
+                            f"{vuelo.tiempo},{vuelo.precio},"
+                            f"{vuelo.cant_vuelos}\n")
     print("OK")
 
 
