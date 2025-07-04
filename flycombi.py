@@ -3,6 +3,18 @@ from funciones import camino_mas_rapido, camino_mas_barato, camino_escalas, cent
 from grafo import Grafo
 import sys
 
+def crear_grafo_frecuencia(vuelos):
+    grafo = Grafo(es_dirigido=True)
+    for origen in vuelos:
+        for destino in vuelos[origen]:
+            vuelo = vuelos[origen][destino]
+            if vuelo.cant_vuelos > 0:
+                peso = 1 / vuelo.cant_vuelos
+            else:
+                peso = float('inf')  # O un valor muy alto si no hay vuelos
+            grafo.agregar_arista(origen, destino, peso)
+    return grafo
+
 '''---------mas rapido -----------'''
 def crear_grafo_tiempo(vuelos):
     grafo = Grafo(es_dirigido=True)
@@ -55,6 +67,7 @@ def main():
     grafo_precio = crear_grafo_precio(vuelos)
     grafo_precio_no_dirigido = crear_grafo_precio_no_dirigido(vuelos)
     grafo_escalas = crear_grafo_escalas(vuelos)
+    grafo_frecuencias = crear_grafo_frecuencia(vuelos)
 
     for linea in sys.stdin:  #camino_mas rapido,San Diego,New York,  camino_escalas San Diego,New York
         linea = linea.strip()
@@ -89,12 +102,8 @@ def main():
                     print("Error en cantidad de argumentos, deberian ser 1")
                 else:
                     n = int(parametros[0])
-                    cent = centralidad(grafo_precio)
-                    i = 0
-                    for aeropuerto, _ in cent.items():
-                        if i < n:
-                            print(aeropuerto)
-                        i+=1
+                    centralidad(grafo_frecuencias, n)
+                    
             case 'nueva_aerolinea':
                 if len(parametros) != 1:
                     print("Error: se espera 1 parámetro (ruta del archivo)")

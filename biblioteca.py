@@ -134,3 +134,23 @@ def mst_prim(grafo):
                 heapq.heappush(heap, (peso_vecino, w, x))
     return arbol
 
+
+
+def calcular_centralidad(grafo):
+    cent = {}
+    for v in grafo.obtener_vertices(): cent[v] = 0
+    for v in grafo.obtener_vertices():
+        padre, distancia = camino_minimo_dijkstra(grafo, v, None)
+        cent_aux = {}
+        for w in grafo.obtener_vertices():
+            cent_aux[w] = 0
+        vertices_ordenados = sorted(distancia, key=distancia.get, reverse=True)
+        for w in vertices_ordenados:
+            p = padre.get(w)
+            if p is None or p not in cent_aux:
+                continue
+            cent_aux[p] += 1 + cent_aux[w]
+        for w in grafo.obtener_vertices():
+            if w == v: continue
+            cent[w] += cent_aux[w]
+    return cent

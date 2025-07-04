@@ -1,4 +1,4 @@
-from biblioteca import camino_minimo_dijkstra, reconstruir_camino, bfs, mst_prim
+from biblioteca import camino_minimo_dijkstra, reconstruir_camino, bfs, mst_prim, calcular_centralidad
 
 
 def obtener_aeropuertos(ciudades, origen, destino):
@@ -58,25 +58,14 @@ def camino_escalas(grafo_escalas, ciudades, origen, destino):
     else:
         print("No se encontro camino")
 
+def centralidad(grafo_precio, n):
+    dicc_centralidad = calcular_centralidad(grafo_precio)
+    dicc_ordenado = sorted(dicc_centralidad.items(), key=lambda x: x[1], reverse=True)
+    lista = []
+    for aeropuerto, _ in dicc_ordenado[:n]:
+        lista.append(aeropuerto)
+    print(", ".join(lista))
 
-def centralidad(grafo):
-    cent = {}
-    for v in grafo.obtener_vertices(): cent[v] = 0
-    for v in grafo.obtener_vertices():
-        padre, distancia = camino_minimo_dijkstra(grafo, v, None)
-        cent_aux = {}
-        for w in grafo.obtener_vertices():
-            cent_aux[w] = 0
-        vertices_ordenados = sorted(distancia, key=distancia.get, reverse=True)
-        for w in vertices_ordenados:
-            p = padre.get(w)
-            if p is None or p not in cent_aux:
-                continue
-            cent_aux[p] += 1 + cent_aux[w]
-        for w in grafo.obtener_vertices():
-            if w == v: continue
-            cent[w] += cent_aux[w]
-    return cent
 
 
 def nueva_ruta(grafo_precio, vuelos, archivo):
