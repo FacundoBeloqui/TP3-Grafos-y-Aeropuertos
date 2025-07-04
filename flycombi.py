@@ -118,7 +118,7 @@ def main():
                     print("Error en cantidad de argumentos, deberian ser 1")
                 else:
                     ruta = parametros[0]
-                    itinerario(grafo_tiempo, dicc_ciudades, ruta)
+                    itinerario(grafo_escalas, dicc_ciudades, ruta)
 
             case 'salir':
                 sys.exit(0)
