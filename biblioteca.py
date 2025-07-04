@@ -156,7 +156,7 @@ def calcular_centralidad(grafo):
     return cent
 
 
-def grados_entrada(grafo):
+'''def grados_entrada(grafo):
     g_ent = {}
     for v in grafo.obtener_vertices():
         g_ent[v] = 0
@@ -181,3 +181,22 @@ def topologico_grados(grafo):
             if g_ent[w] == 0:
                 q.append(w)
     return resultado
+'''
+
+
+def _dfs(grafo, v, visitados, pila):
+    visitados.add(v)
+    for w in grafo.adyacentes(v):
+        if w not in visitados:
+            visitados.add(w)
+            _dfs(grafo, w, visitados, pila)
+    pila.append(v)
+
+
+def topologico_dfs(grafo):
+    visitados = set()
+    pila = []
+    for v in grafo.obtener_vertices():
+        if v not in visitados:
+            _dfs(grafo, v, visitados, pila)
+    return pila[::-1]

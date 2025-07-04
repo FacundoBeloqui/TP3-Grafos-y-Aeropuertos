@@ -1,5 +1,5 @@
 from grafo import Grafo 
-from biblioteca import camino_minimo_dijkstra, reconstruir_camino, bfs, mst_prim, calcular_centralidad, topologico_grados
+from biblioteca import camino_minimo_dijkstra, reconstruir_camino, bfs, mst_prim, calcular_centralidad, topologico_dfs
 
 
 def obtener_aeropuertos(ciudades, origen, destino):
@@ -59,9 +59,9 @@ def camino_escalas(grafo_escalas, ciudades, origen, destino):
     else:
         print("No se encontro camino")
 
-def centralidad(grafo_precio, n):
-    dicc_centralidad = calcular_centralidad(grafo_precio)
-    dicc_ordenado = sorted(dicc_centralidad.items(), key=lambda x: (-x[1], x[0]))
+def centralidad(grafo_frecuencias, n):
+    dicc_centralidad = calcular_centralidad(grafo_frecuencias)
+    dicc_ordenado = sorted(dicc_centralidad.items(), key=lambda x: x[1], reverse=True)
     lista = []
     for aeropuerto, _ in dicc_ordenado[:n]:
         lista.append(aeropuerto)
@@ -88,7 +88,7 @@ def nueva_ruta(grafo_precio, vuelos, archivo):
     print("OK")
 
 
-def itinerario(grafo_vuelos, dicc_ciudades, ruta):
+def itinerario(grafo_escalas, dicc_ciudades, ruta):
     lineas = []
     with open(ruta) as f:
         for linea in f:
@@ -104,13 +104,13 @@ def itinerario(grafo_vuelos, dicc_ciudades, ruta):
         ciudad = lineas[i].split(",")
         grafo_orden.agregar_arista(ciudad[0].strip(), ciudad[1].strip()) 
     
-    orden = topologico_grados(grafo_orden)
+    orden = topologico_dfs(grafo_orden)
     if len(orden) != len(ciudades):
         return
 
     print(", ".join(orden))
     for i in range(len(orden)-1):
-        camino_minimo(grafo_vuelos, dicc_ciudades, orden[i], orden[i+1])
+        camino_escalas(grafo_escalas, dicc_ciudades, orden[i], orden[i+1])
 
 
 

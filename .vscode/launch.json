@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: flycombi.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/flycombi.py",
+            "console": "integratedTerminal",
+            "args": ["aeropuertos.csv", "vuelos.csv"], // Aquí pones los nombres de tus archivos de aeropuertos y vuelos
+            "justMyCode": true
+        }
+    ]
+}
