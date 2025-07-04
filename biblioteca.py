@@ -120,10 +120,10 @@ def mst_prim(grafo):
     heap = []
     for w in grafo.adyacentes(v):
         peso = grafo.peso_arista(v, w)
-        heapq.heappush(heap, (v, w, peso))
+        heapq.heappush(heap, (peso, v, w))
     arbol = Grafo(es_dirigido=False, vertices_init=grafo.obtener_vertices())
     while heap:
-        v, w, peso = heapq.heappop(heap)
+        peso, v, w = heapq.heappop(heap)
         if w in visitados:
             continue
         arbol.agregar_arista(v, w, peso)
@@ -131,6 +131,6 @@ def mst_prim(grafo):
         for x in grafo.adyacentes(w):
             if x not in visitados:
                 peso_vecino = grafo.peso_arista(w, x)
-                heapq.heappush(heap, (w, x, peso_vecino))
+                heapq.heappush(heap, (peso_vecino, w, x))
     return arbol
 

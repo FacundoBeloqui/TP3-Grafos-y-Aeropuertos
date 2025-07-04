@@ -37,7 +37,7 @@ class Grafo:
     def estan_unidos(self, v, w):
         return v in self.adyacencia and w in self.adyacencia[v]
 
-    def peso_arista(self, v,                        w):
+    def peso_arista(self, v, w):
         if self.estan_unidos(v, w):
             return self.adyacencia[v][w]
         return None

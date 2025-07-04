@@ -1,5 +1,5 @@
 from datos import guardar_aeropuertos, guardar_vuelos, crear_dicc_ciudades
-from funciones import camino_mas_rapido, camino_mas_barato, camino_escalas, centralidad
+from funciones import camino_mas_rapido, camino_mas_barato, camino_escalas, centralidad, nueva_ruta
 from grafo import Grafo
 import sys
 
@@ -17,6 +17,14 @@ def crear_grafo_tiempo(vuelos):
 
 def crear_grafo_precio(vuelos):
     grafo = Grafo(es_dirigido=True)
+    for origen in vuelos:
+        for destino in vuelos[origen]:
+            vuelo = vuelos[origen][destino]
+            grafo.agregar_arista(origen, destino, vuelo.precio)
+    return grafo
+
+def crear_grafo_precio_no_dirigido(vuelos):
+    grafo = Grafo(es_dirigido=False)
     for origen in vuelos:
         for destino in vuelos[origen]:
             vuelo = vuelos[origen][destino]
@@ -45,6 +53,7 @@ def main():
 
     grafo_tiempo = crear_grafo_tiempo(vuelos)
     grafo_precio = crear_grafo_precio(vuelos)
+    grafo_precio_no_dirigido = crear_grafo_precio_no_dirigido(vuelos)
     grafo_escalas = crear_grafo_escalas(vuelos)
 
     for linea in sys.stdin:  #camino_mas rapido,San Diego,New York,  camino_escalas San Diego,New York
@@ -79,7 +88,20 @@ def main():
                 if len(parametros) != 1:
                     print("Error en cantidad de argumentos, deberian ser 1")
                 else:
-                    centralidad()
+                    n = int(parametros[0])
+                    cent = centralidad(grafo_precio)
+                    i = 0
+                    for aeropuerto, _ in cent.items():
+                        if i < n:
+                            print(aeropuerto)
+                        i+=1
+            case 'nueva_aerolinea':
+                if len(parametros) != 1:
+                    print("Error: se espera 1 parámetro (ruta del archivo)")
+                else:
+                    ruta_salida = parametros[0]
+                    nueva_ruta(grafo_precio_no_dirigido, vuelos, ruta_salida)
+
             case 'salir':
                 sys.exit(0)
 

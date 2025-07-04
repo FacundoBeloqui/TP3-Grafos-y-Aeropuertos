@@ -5,16 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed9b34d4-6755-4edf-82de-62368847716c" name="Changes" comment="Repositorio Creado">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/biblioteca.py" beforeDir="false" afterPath="$PROJECT_DIR$/biblioteca.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datos.py" beforeDir="false" afterPath="$PROJECT_DIR$/datos.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flycombi.py" beforeDir="false" afterPath="$PROJECT_DIR$/flycombi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/funciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/funciones.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grafo.py" beforeDir="false" afterPath="$PROJECT_DIR$/grafo.py" afterDir="false" />
     </list>
-    <list id="e999f66f-158f-4f32-be24-f907794ef9f0" name="Changes by luisana" comment="">
-      <change beforePath="$PROJECT_DIR$/biblioteca.py" beforeDir="false" afterPath="$PROJECT_DIR$/biblioteca.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datos.py" beforeDir="false" afterPath="$PROJECT_DIR$/datos.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flycombi.py" beforeDir="false" afterPath="$PROJECT_DIR$/flycombi.py" afterDir="false" />
-    </list>
+    <list id="e999f66f-158f-4f32-be24-f907794ef9f0" name="Changes by luisana" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,36 +27,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/datos.py">
-      <ranges>
-        <range start1="2" end1="3" start2="2" end2="4" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
-        <range start1="8" end1="9" start2="9" end2="10" changelist="e999f66f-158f-4f32-be24-f907794ef9f0" />
-        <range start1="20" end1="21" start2="21" end2="22" changelist="e999f66f-158f-4f32-be24-f907794ef9f0" />
-        <range start1="28" end1="29" start2="29" end2="30" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
-        <range start1="35" end1="36" start2="36" end2="37" changelist="e999f66f-158f-4f32-be24-f907794ef9f0" />
-        <range start1="46" end1="47" start2="47" end2="48" changelist="e999f66f-158f-4f32-be24-f907794ef9f0" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/biblioteca.py">
-      <ranges>
-        <range start1="13" end1="14" start2="13" end2="14" changelist="e999f66f-158f-4f32-be24-f907794ef9f0" />
-        <range start1="46" end1="47" start2="46" end2="47" changelist="e999f66f-158f-4f32-be24-f907794ef9f0" />
-        <range start1="65" end1="66" start2="65" end2="66" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
-        <range start1="76" end1="77" start2="76" end2="77" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
-        <range start1="86" end1="87" start2="86" end2="87" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
-        <range start1="88" end1="89" start2="88" end2="89" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
-        <range start1="95" end1="96" start2="95" end2="96" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/flycombi.py">
-      <ranges>
-        <range start1="0" end1="0" start2="0" end2="2" changelist="e999f66f-158f-4f32-be24-f907794ef9f0" />
-        <range start1="1" end1="1" start2="3" end2="4" changelist="e999f66f-158f-4f32-be24-f907794ef9f0" />
-        <range start1="32" end1="32" start2="35" end2="91" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
-      </ranges>
-    </file>
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -68,26 +35,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.datos.executor": "Debug",
-    "Python.flycombi.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/facu/Documentos/FIUBA/Algo/TP3",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.datos.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.flycombi.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/facu/Documentos/FIUBA/Algo/TP3&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="flycombi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TP3 - Grafos y Aeropuertos" />
@@ -135,6 +102,10 @@
       <updated>1750535948504</updated>
       <workItem from="1750535949558" duration="3639000" />
       <workItem from="1751332283374" duration="8328000" />
+      <workItem from="1751340765878" duration="53000" />
+      <workItem from="1751576673459" duration="258000" />
+      <workItem from="1751576954073" duration="308000" />
+      <workItem from="1751579307561" duration="7983000" />
     </task>
     <task id="LOCAL-00001" summary="Repositorio Creado">
       <option name="closed" value="true" />
