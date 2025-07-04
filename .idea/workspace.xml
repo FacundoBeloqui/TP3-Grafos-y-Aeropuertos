@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ed9b34d4-6755-4edf-82de-62368847716c" name="Changes" comment="Repositorio Creado" />
+    <list default="true" id="ed9b34d4-6755-4edf-82de-62368847716c" name="Changes" comment="Repositorio Creado">
+      <change afterPath="$PROJECT_DIR$/entrega.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flycombi.py" beforeDir="false" afterPath="$PROJECT_DIR$/flycombi.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,7 +52,13 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Makefile Target.flycombi">
+    <configuration name="flycombi" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/entrega.mk" target="flycombi" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
     <configuration name="flycombi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TP3 - Grafos y Aeropuertos" />
       <option name="ENV_FILES" value="" />
@@ -74,6 +84,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Makefile Target.flycombi" />
         <item itemvalue="Python.flycombi" />
       </list>
     </recent_temporary>
