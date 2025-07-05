@@ -16,7 +16,7 @@ def obtener_aeropuertos(ciudades, origen, destino):
 def camino_minimo(grafo, ciudades, origen, destino, modo):
     origenes, destinos = obtener_aeropuertos(ciudades, origen, destino)
     if origenes is None:
-        return
+        return []
 
     mejor_camino = None
     mejor = float("inf")
@@ -30,8 +30,10 @@ def camino_minimo(grafo, ciudades, origen, destino, modo):
 
     if mejor_camino:
         print(" -> ".join(mejor_camino))
+        return mejor_camino
     else:
         print("No se encontro camino")
+        return []
 
 
 def camino_mas_rapido(grafo_tiempo, ciudades, origen, destino):
@@ -44,6 +46,8 @@ def camino_mas_barato(grafo_precio, ciudades, origen, destino):
 
 def camino_escalas(grafo_escalas, ciudades, origen, destino):
     aeropuertos_origen, aeropuertos_destino = obtener_aeropuertos(ciudades, origen, destino)
+    if aeropuertos_origen is None:
+        return []
 
     mejor_camino = None
     menos_escalas = float("inf")
@@ -57,8 +61,10 @@ def camino_escalas(grafo_escalas, ciudades, origen, destino):
 
     if mejor_camino:
         print(" -> ".join(mejor_camino))
+        return mejor_camino
     else:
         print("No se encontro camino")
+        return []
 
 def centralidad(grafo_precio, n):
     dicc_centralidad = calcular_centralidad(grafo_precio)
@@ -115,6 +121,38 @@ def itinerario(grafo, dicc_ciudades, ruta):
         camino_escalas(grafo, dicc_ciudades, orden[i], orden[i+1])
 
 
+def exportar_kml(ultima_salida, aeropuertos, ruta_archivo):
+    if not ultima_salida or len(ultima_salida) < 2:
+        print("No hay ruta para exportar")
+        return
 
+    with open(ruta_archivo, "w") as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+        f.write('<kml xmlns="http://earth.google.com/kml/2.1">\n')
+        f.write('  <Document>\n')
+        f.write('       <name>KML caminos minimos</name>\n')
+        f.write('       <description>KML caminos minimos</description>\n')
+        for codigo in ultima_salida:
+            aeropuerto = aeropuertos[codigo]
+            f.write('    <Placemark>\n')
+            f.write(f'       <name>{aeropuerto.ciudad}</name>\n')
+            f.write('        <Point>\n')
+            f.write(f'          <coordinates>{aeropuerto.latitud}, {aeropuerto.longitud}</coordinates>\n')
+            f.write('        <Point>\n')
+            f.write('    </Placemark>\n')
+
+        f.write('    <Placemark>\n')
+        f.write('      <name>Camino Minimo</name>\n')
+        f.write('      <LineString>\n')
+        f.write('        <coordinates>\n')
+        for codigo in ultima_salida:
+            aeropuerto = aeropuertos[codigo]
+            f.write(f'          {aeropuerto.latitud},{aeropuerto.longitud},0\n')
+        f.write('        </coordinates>\n')
+        f.write('      </LineString>\n')
+        f.write('    </Placemark>\n')
+        f.write('  </Document>\n')
+        f.write('</kml>\n')
+    print("OK")
 
     

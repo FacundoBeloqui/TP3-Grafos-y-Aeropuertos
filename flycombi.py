@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from datos import guardar_aeropuertos, guardar_vuelos, crear_dicc_ciudades
-from funciones import camino_minimo, camino_escalas, centralidad, nueva_ruta, itinerario
+from funciones import camino_minimo, camino_escalas, centralidad, nueva_ruta, itinerario, exportar_kml
 from grafo import Grafo
 import sys
 
@@ -24,6 +24,7 @@ def main():
     vuelos = guardar_vuelos(archivo_vue)
     dicc_ciudades = crear_dicc_ciudades(aeropuertos)
     grafo = crear_grafo(vuelos)
+    ultima_salida = []
 
     for linea in sys.stdin:  #camino_mas rapido,San Diego,New York,  camino_escalas San Diego,New York
         linea = linea.strip()
@@ -40,9 +41,9 @@ def main():
                 origen = parametros[1]
                 destino = parametros[2]
                 if parametros[0] == "rapido":
-                    camino_minimo(grafo, dicc_ciudades, origen, destino, lambda vuelo: vuelo.tiempo)
+                    ultima_salida = camino_minimo(grafo, dicc_ciudades, origen, destino, lambda vuelo: vuelo.tiempo)
                 elif parametros[0] == "barato":
-                    camino_minimo(grafo, dicc_ciudades, origen, destino, lambda vuelo: vuelo.precio)
+                    ultima_salida = camino_minimo(grafo, dicc_ciudades, origen, destino, lambda vuelo: vuelo.precio)
 
         elif comando ==  'camino_escalas':
             if len(parametros) != 2:
@@ -50,7 +51,7 @@ def main():
             else:
                 origen = parametros[0]
                 destino = parametros[1]
-                camino_escalas(grafo, dicc_ciudades, origen, destino)
+                ultima_salida = camino_escalas(grafo, dicc_ciudades, origen, destino)
 
         elif comando == 'centralidad':
             if len(parametros) != 1:
@@ -72,6 +73,13 @@ def main():
             else:
                 ruta = parametros[0]
                 itinerario(grafo, dicc_ciudades, ruta)
+
+        elif comando == "exportar_kml":
+            if len(parametros) != 1:
+                print("Error: se espera 1 parámetro (ruta del archivo)")
+            else:
+                ruta_archivo =parametros[0]
+                exportar_kml(ultima_salida, aeropuertos, ruta_archivo)
 
         elif comando == 'salir':
             sys.exit(0)

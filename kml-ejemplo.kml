@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.1">
+  <Document>
+       <name>KML caminos minimos</name>
+       <description>KML caminos minimos</description>
+    <Placemark>
+       <name>San Diego</name>
+        <Point>
+          <coordinates>32.73356, -117.18966</coordinates>
+        <Point>
+    </Placemark>
+    <Placemark>
+       <name>Denver</name>
+        <Point>
+          <coordinates>39.85841, -104.667</coordinates>
+        <Point>
+    </Placemark>
+    <Placemark>
+       <name>New York</name>
+        <Point>
+          <coordinates>40.63975, -73.77893</coordinates>
+        <Point>
+    </Placemark>
+    <Placemark>
+      <name>Camino Minimo</name>
+      <LineString>
+        <coordinates>
+          -117.18966,32.73356,0
+          -104.667,39.85841,0
+          -73.77893,40.63975,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>
