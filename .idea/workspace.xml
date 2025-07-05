@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ed9b34d4-6755-4edf-82de-62368847716c" name="Changes" comment="Repositorio Creado">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flycombi.py" beforeDir="false" afterPath="$PROJECT_DIR$/flycombi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/funciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/funciones.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kml-ejemplo.kml" beforeDir="false" afterPath="$PROJECT_DIR$/kml-ejemplo.kml" afterDir="false" />
     </list>
     <list id="e5490490-4150-48f1-b144-80f6d2ffbc1f" name="Changes by luisana" comment="">
-      <change beforePath="$PROJECT_DIR$/flycombi.py" beforeDir="false" afterPath="$PROJECT_DIR$/flycombi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/funciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/funciones.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,14 +28,14 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/flycombi.py">
+    <file path="$PROJECT_DIR$/funciones.py">
       <ranges>
-        <range start1="3" end1="4" start2="3" end2="4" changelist="e5490490-4150-48f1-b144-80f6d2ffbc1f" />
-        <range start1="26" end1="26" start2="26" end2="27" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
-        <range start1="42" end1="43" start2="43" end2="44" changelist="e5490490-4150-48f1-b144-80f6d2ffbc1f" />
-        <range start1="44" end1="45" start2="45" end2="46" changelist="e5490490-4150-48f1-b144-80f6d2ffbc1f" />
-        <range start1="52" end1="53" start2="53" end2="54" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
-        <range start1="74" end1="74" start2="75" end2="82" changelist="e5490490-4150-48f1-b144-80f6d2ffbc1f" />
+        <range start1="134" end1="134" start2="134" end2="135" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
+        <range start1="137" end1="138" start2="138" end2="139" changelist="e5490490-4150-48f1-b144-80f6d2ffbc1f" />
+        <range start1="140" end1="141" start2="141" end2="142" changelist="e5490490-4150-48f1-b144-80f6d2ffbc1f" />
+        <range start1="142" end1="142" start2="143" end2="144" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
+        <range start1="143" end1="153" start2="145" end2="157" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
+        <range start1="154" end1="155" start2="158" end2="159" changelist="ed9b34d4-6755-4edf-82de-62368847716c" />
       </ranges>
     </file>
   </component>

@@ -3,33 +3,39 @@
   <Document>
        <name>KML caminos minimos</name>
        <description>KML caminos minimos</description>
+
     <Placemark>
-       <name>San Diego</name>
+       <name>SAN</name>
         <Point>
           <coordinates>32.73356, -117.18966</coordinates>
-        <Point>
+        </Point>
     </Placemark>
+
     <Placemark>
-       <name>Denver</name>
+       <name>DEN</name>
         <Point>
           <coordinates>39.85841, -104.667</coordinates>
-        <Point>
+        </Point>
     </Placemark>
+
     <Placemark>
-       <name>New York</name>
+       <name>JFK</name>
         <Point>
           <coordinates>40.63975, -73.77893</coordinates>
-        <Point>
+        </Point>
     </Placemark>
+
     <Placemark>
-      <name>Camino Minimo</name>
       <LineString>
-        <coordinates>
-          -117.18966,32.73356,0
-          -104.667,39.85841,0
-          -73.77893,40.63975,0
-        </coordinates>
+        <coordinates>-117.18966, 32.73356 -104.667, 39.85841</coordinates>
       </LineString>
     </Placemark>
+
+    <Placemark>
+      <LineString>
+        <coordinates>-104.667, 39.85841 -73.77893, 40.63975</coordinates>
+      </LineString>
+    </Placemark>
+
   </Document>
 </kml>

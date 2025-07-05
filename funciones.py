@@ -132,27 +132,31 @@ def exportar_kml(ultima_salida, aeropuertos, ruta_archivo):
         f.write('  <Document>\n')
         f.write('       <name>KML caminos minimos</name>\n')
         f.write('       <description>KML caminos minimos</description>\n')
+        f.write('\n')
         for codigo in ultima_salida:
             aeropuerto = aeropuertos[codigo]
             f.write('    <Placemark>\n')
-            f.write(f'       <name>{aeropuerto.ciudad}</name>\n')
+            f.write(f'       <name>{aeropuerto.codigo}</name>\n')
             f.write('        <Point>\n')
             f.write(f'          <coordinates>{aeropuerto.latitud}, {aeropuerto.longitud}</coordinates>\n')
-            f.write('        <Point>\n')
+            f.write('        </Point>\n')
             f.write('    </Placemark>\n')
+            f.write('\n')
 
-        f.write('    <Placemark>\n')
-        f.write('      <name>Camino Minimo</name>\n')
-        f.write('      <LineString>\n')
-        f.write('        <coordinates>\n')
-        for codigo in ultima_salida:
-            aeropuerto = aeropuertos[codigo]
-            f.write(f'          {aeropuerto.latitud},{aeropuerto.longitud},0\n')
-        f.write('        </coordinates>\n')
-        f.write('      </LineString>\n')
-        f.write('    </Placemark>\n')
+        for i in range(len(ultima_salida)-1):
+            codigo_origen = ultima_salida[i]
+            codigo_destino = ultima_salida[i+1]
+            aeropuerto_o = aeropuertos[codigo_origen]
+            aeropuerto_d = aeropuertos[codigo_destino]
+            f.write('    <Placemark>\n')
+            f.write('      <LineString>\n')
+            f.write(f'        <coordinates>{aeropuerto_o.latitud}, {aeropuerto_o.longitud} {aeropuerto_d.latitud}, {aeropuerto_d.longitud}</coordinates>\n')
+            f.write('      </LineString>\n')
+            f.write('    </Placemark>\n')
+            f.write('\n')
+
         f.write('  </Document>\n')
-        f.write('</kml>\n')
+        f.write('</kml>')
     print("OK")
 
     
