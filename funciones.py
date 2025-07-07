@@ -1,5 +1,6 @@
 from grafo import Grafo 
 from biblioteca import camino_minimo_dijkstra, reconstruir_camino, bfs, mst_kruskal, calcular_centralidad, topologico_dfs
+import heapq
 
 
 def obtener_aeropuertos(ciudades, origen, destino):
@@ -8,10 +9,14 @@ def obtener_aeropuertos(ciudades, origen, destino):
     aeropuertos_destino = ciudades.get(destino, [])
 
     if not aeropuertos_origen or not aeropuertos_destino:
-        print("Origen o destino no encontrado")
         return None, None
 
     return aeropuertos_origen, aeropuertos_destino
+
+
+def imprimir_camino(mejor_camino, char):
+    print(char.join(mejor_camino))
+
 
 def camino_minimo(grafo, ciudades, origen, destino, modo):
     origenes, destinos = obtener_aeropuertos(ciudades, origen, destino)
@@ -29,19 +34,11 @@ def camino_minimo(grafo, ciudades, origen, destino, modo):
                 mejor = dist[aerop_destino]
 
     if mejor_camino:
-        print(" -> ".join(mejor_camino))
+        imprimir_camino(mejor_camino, " -> ")
         return mejor_camino
     else:
         print("No se encontro camino")
         return []
-
-
-def camino_mas_rapido(grafo_tiempo, ciudades, origen, destino):
-    return camino_minimo(grafo_tiempo, ciudades, origen, destino, lambda vuelo: vuelo.tiempo)
-
-
-def camino_mas_barato(grafo_precio, ciudades, origen, destino):
-    return camino_minimo(grafo_precio, ciudades, origen, destino, lambda vuelo: vuelo.precio)
 
 
 def camino_escalas(grafo_escalas, ciudades, origen, destino):
@@ -49,50 +46,47 @@ def camino_escalas(grafo_escalas, ciudades, origen, destino):
     if aeropuertos_origen is None:
         return []
 
-    mejor_camino = None
-    menos_escalas = float("inf")
+    mejor_camino = []
 
     for orig in aeropuertos_origen:
         padre, orden = bfs(grafo_escalas, orig)
         for dest in aeropuertos_destino:
-            if dest in orden and orden[dest] < menos_escalas:
-                mejor_camino = reconstruir_camino(padre, dest)
-                menos_escalas = orden[dest]
+            if dest in orden:
+                camino = reconstruir_camino(padre, dest)
+                if not mejor_camino or len(camino) < len(mejor_camino):
+                    mejor_camino = camino
+
 
     if mejor_camino:
-        print(" -> ".join(mejor_camino))
+        imprimir_camino(mejor_camino, " -> ")
         return mejor_camino
     else:
         print("No se encontro camino")
         return []
 
-def centralidad(grafo_precio, n):
-    dicc_centralidad = calcular_centralidad(grafo_precio)
-    dicc_ordenado = sorted(dicc_centralidad.items(), key=lambda x: x[1], reverse=True)
+def centralidad(grafo_precio, n, centralidad_total):
+    if centralidad_total is None:
+        dicc_centralidad = calcular_centralidad(grafo_precio, lambda vuelo: 1/vuelo.cant_vuelos if vuelo.cant_vuelos != 0 else float("inf"))
+    top_n = heapq.nlargest(n, dicc_centralidad.items(), key=lambda x: x[1])
     lista = []
-    for aeropuerto, _ in dicc_ordenado[:n]:
+    for aeropuerto, _ in top_n:
         lista.append(aeropuerto)
-    print(", ".join(lista))
-
+    imprimir_camino(lista, ", ")
 
 
 def nueva_ruta(grafo, vuelos, archivo):
-    arbol = mst_kruskal(grafo)
+    arbol_tendido_minimo = mst_kruskal(grafo)
     with open(archivo, 'w') as f:
-        for u in arbol.obtener_vertices():
-            for v in arbol.adyacentes(u):
-                if u < v:
-                    if v in vuelos.get(u, {}):
-                        vuelo = vuelos[u][v]
-                        origen, destino = u, v
-                    elif u in vuelos.get(v, {}):
-                        vuelo = vuelos[v][u]
-                        origen, destino = v, u
+        for origen in arbol_tendido_minimo.obtener_vertices():
+            for destino in arbol_tendido_minimo.adyacentes(origen):
+                if origen < destino:
+                    if destino in vuelos.get(origen, {}):
+                        vuelo = vuelos[origen][destino]
+                    elif origen in vuelos.get(destino, {}):
+                        vuelo = vuelos[destino][origen]
                     else:
                         continue
-                    f.write(f"{origen},{destino},"
-                            f"{vuelo.tiempo},{vuelo.precio},"
-                            f"{vuelo.cant_vuelos}\n")
+                    f.write(f"{origen},{destino},{vuelo.tiempo},{vuelo.precio},{vuelo.cant_vuelos}\n")
     print("OK")
 
 
@@ -109,14 +103,14 @@ def itinerario(grafo, dicc_ciudades, ruta):
         grafo_orden.agregar_vertice(ciudad)
     
     for i in range(1, len(lineas)):
-        ciudad = lineas[i].split(",")
-        grafo_orden.agregar_arista(ciudad[0].strip(), ciudad[1].strip()) 
+        par_ciudades = lineas[i].split(",")
+        grafo_orden.agregar_arista(par_ciudades[0].strip(), par_ciudades[1].strip()) 
     
     orden = topologico_dfs(grafo_orden)
     if len(orden) != len(ciudades):
         return
 
-    print(", ".join(orden))
+    imprimir_camino(orden, ", ")
     for i in range(len(orden)-1):
         camino_escalas(grafo, dicc_ciudades, orden[i], orden[i+1])
 

@@ -87,8 +87,8 @@ def camino_minimo_dijkstra(grafo, obtener_peso, origen, destino):
         if v == destino:
             return padre, dist
         for w in grafo.adyacentes(v):
-            vuelo = grafo.peso_arista(v, w)
-            peso = obtener_peso(vuelo)
+            arista = grafo.peso_arista(v, w)
+            peso = obtener_peso(arista)
             nueva = dist[v] + peso
             if nueva < dist[w]:
                 dist[w] = nueva
@@ -134,8 +134,8 @@ def mst_prim(grafo, obtener_peso):
     visitados.add(v)
     heap = []
     for w in grafo.adyacentes(v):
-        vuelo = grafo.peso_arista(v, w)
-        peso = obtener_peso(vuelo)
+        arista = grafo.peso_arista(v, w)
+        peso = obtener_peso(arista)
         heapq.heappush(heap, (peso, v, w))
     arbol = Grafo(es_dirigido=False, vertices_init=grafo.obtener_vertices())
     while heap:
@@ -146,29 +146,30 @@ def mst_prim(grafo, obtener_peso):
         visitados.add(w)
         for x in grafo.adyacentes(w):
             if x not in visitados:
-                vuelo_vecino = grafo.peso_arista(w, x)
-                peso_vecino = obtener_peso(vuelo_vecino)
+                arista_vecina = grafo.peso_arista(w, x)
+                peso_vecino = obtener_peso(arista_vecina)
                 heapq.heappush(heap, (peso_vecino, w, x))
     return arbol
 
-def mst_kruskal(grafo):
+def mst_kruskal(grafo, obtener_peso):
     uf = UnionFind(grafo.obtener_vertices())
     aristas = obtener_aristas(grafo)
-    aristas.sort(key=lambda tpl: tpl[2].precio)
+    aristas.sort(key=lambda tpl: obtener_peso(tpl[2]))
     mst = Grafo(es_dirigido=False, vertices_init=grafo.obtener_vertices())
-    for v, w, vuelo in aristas:
+    for v, w, arista in aristas:
         if uf.find(v) != uf.find(w):
-            mst.agregar_arista(v, w, vuelo.precio)
+            mst.agregar_arista(v, w, obtener_peso(arista))
             uf.union(v, w)
-
+            
     return mst
 
 
-def calcular_centralidad(grafo):
+def calcular_centralidad(grafo, obtener_peso):
     cent = {}
-    for v in grafo.obtener_vertices(): cent[v] = 0
+    for v in grafo.obtener_vertices(): 
+        cent[v] = 0
     for v in grafo.obtener_vertices():
-        padre, distancia = camino_minimo_dijkstra(grafo, lambda vuelo: 1/vuelo.cant_vuelos if vuelo.cant_vuelos != 0 else float("inf"), v, None)
+        padre, distancia = camino_minimo_dijkstra(grafo, obtener_peso, v, None)
         cent_aux = {}
         for w in grafo.obtener_vertices():
             cent_aux[w] = 0
@@ -179,7 +180,8 @@ def calcular_centralidad(grafo):
                 continue
             cent_aux[p] += 1 + cent_aux[w]
         for w in grafo.obtener_vertices():
-            if w == v: continue
+            if w == v: 
+                continue
             cent[w] += cent_aux[w]
     return cent
 

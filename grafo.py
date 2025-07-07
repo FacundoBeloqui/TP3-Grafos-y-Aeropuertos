@@ -15,23 +15,30 @@ class Grafo:
 
     def borrar_vertice(self, v):
         if v not in self.adyacencia:
-            return
+            raise Exception(f"el vertice '{v}' no existe")
         del self.adyacencia[v]
         for ady in self.adyacencia.values():
             if v in ady:
                 del ady[v]
 
     def agregar_arista(self, v, w, peso=1):
-        self.agregar_vertice(v)
-        self.agregar_vertice(w)
+        if v not in self.adyacencia:
+            raise Exception(f"el vertice '{v}' no existe")
+        if w not in self.adyacencia:
+            raise Exception(f"el vertice '{w}' no existe")
         self.adyacencia[v][w] = peso
         if not self.es_dirigido:
             self.adyacencia[w][v] = peso
 
     def borrar_arista(self, v, w):
-        if v in self.adyacencia and w in self.adyacencia[v]:
-            del self.adyacencia[v][w]
-        if not self.es_dirigido and w in self.adyacencia and v in self.adyacencia[w]:
+        if v not in self.adyacencia:
+            raise Exception(f"el vertice '{v}' no existe")
+        if w not in self.adyacencia:
+            raise Exception(f"el vertice '{w}' no existe")
+        if w not in self.adyacencia[v]:
+            raise Exception(f"la arista'{v} - {w}' no existe")
+        del self.adyacencia[v][w]
+        if not self.es_dirigido:
             del self.adyacencia[w][v]
 
     def estan_unidos(self, v, w):
@@ -52,7 +59,7 @@ class Grafo:
 
     def adyacentes(self, v):
         if v not in self.adyacencia:
-            return []
+            raise Exception(f"el vertice '{v}' no existe")
         return list(self.adyacencia[v].keys())
 
     def __str__(self):
