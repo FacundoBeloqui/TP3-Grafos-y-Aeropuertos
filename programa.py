@@ -37,7 +37,7 @@ def procesar_comando(linea, aeropuertos, vuelos, dicc_ciudades, grafo, ultima_sa
             return ultima_salida
 
         n = int(parametros[0])
-        centralidad(grafo, n)
+        centralidad(grafo, n, centralidad_total)
 
     elif comando == 'nueva_aerolinea':
         if not chequear_parametros(parametros, 1):

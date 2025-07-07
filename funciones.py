@@ -75,7 +75,7 @@ def centralidad(grafo_precio, n, centralidad_total):
 
 
 def nueva_ruta(grafo, vuelos, archivo):
-    arbol_tendido_minimo = mst_kruskal(grafo)
+    arbol_tendido_minimo = mst_kruskal(grafo, lambda vuelo: vuelo.precio)
     with open(archivo, 'w') as f:
         for origen in arbol_tendido_minimo.obtener_vertices():
             for destino in arbol_tendido_minimo.adyacentes(origen):

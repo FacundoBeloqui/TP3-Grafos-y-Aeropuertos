@@ -7,6 +7,12 @@ import sys
 
 def crear_grafo(vuelos):
     grafo = Grafo(es_dirigido=False)
+    vertices = set(vuelos.keys())
+    for origen in vuelos:
+        for destino in vuelos[origen]:
+            vertices.add(destino)
+    for vertice in vertices:
+        grafo.agregar_vertice(vertice)
     for origen in vuelos:
         for destino in vuelos[origen]:
             vuelo = vuelos[origen][destino]
@@ -32,7 +38,7 @@ def main():
         linea = linea.strip()
         if not linea:
             continue
-        ultima_salida = procesar_comando(linea, aeropuertos, vuelos, dicc_ciudades, grafo, ultima_salida)
+        ultima_salida = procesar_comando(linea, aeropuertos, vuelos, dicc_ciudades, grafo, ultima_salida, centralidad_total)
 
 
 if __name__ == '__main__':
